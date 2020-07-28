@@ -13,3 +13,7 @@ def read_root():
 @router.get("/items/{item_id}")
 def read_item(item_id: int, q: Optional[str] = None):
     return {"item_id": item_id, "q": q}
+
+@router.get("/name/")
+def read_name(first_name: str, last_name: str):
+    return {"first_name": first_name, "last_name": last_name}
