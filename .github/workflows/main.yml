@@ -33,4 +33,4 @@ jobs:
       run: |
        pip install poetry
        poetry install --no-interaction
-        poetry run pytest
+       poetry run pytest
