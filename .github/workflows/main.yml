@@ -31,5 +31,6 @@ jobs:
         poetry run pycodestyle PoetrySlam tests
     - name: Test with pytest
       run: |
-        pip install pytest
-        pytest
+       pip install poetry
+       poetry install --no-interaction
+        poetry run pytest
