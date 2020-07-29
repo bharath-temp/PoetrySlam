@@ -21,15 +21,18 @@ jobs:
       with:
         python-version: 3.8
     - name: Install dependencies
+      working-directory: ./src/backend
       run: |
         pip install poetry
         poetry install --no-interaction
     - name: Lint with pycodestyle
+      working-directory: ./src/backend
       run: |
         pip install poetry
         poetry install --no-interaction
         poetry run pycodestyle PoetrySlam tests
     - name: Test with pytest
+      working-directory: ./src/backend
       run: |
        pip install poetry
        poetry install --no-interaction
