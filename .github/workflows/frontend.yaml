@@ -1,0 +1,35 @@
+# This is a basic workflow to help you get started with Actions
+
+name: frontend ci pipeline
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  buildAndTest:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Install Dependencies
+        working-directory: ./src/frontend/poetryslam
+        run: yarn
+
+      - name: Build
+        working-directory: ./src/frontend/poetryslam
+        run: yarn build
+
+      - name: Lint
+        working-directory: ./src/frontend/poetryslam
+        run: yarn test
+
+      - name: Test
+        working-directory: ./src/frontend/poetryslam
+        run: yarn test --watchAll=false
