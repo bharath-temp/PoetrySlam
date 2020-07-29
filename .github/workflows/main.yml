@@ -17,19 +17,23 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.8
+      working-directory: ./src/backend
       uses: actions/setup-python@v1
       with:
         python-version: 3.8
     - name: Install dependencies
+      working-directory: ./src/backend
       run: |
         pip install poetry
         poetry install --no-interaction
     - name: Lint with pycodestyle
+      working-directory: ./src/backend
       run: |
         pip install poetry
         poetry install --no-interaction
         poetry run pycodestyle PoetrySlam tests
     - name: Test with pytest
+      working-directory: ./src/backend
       run: |
        pip install poetry
        poetry install --no-interaction
