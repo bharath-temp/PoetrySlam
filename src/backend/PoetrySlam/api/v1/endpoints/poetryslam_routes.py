@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
@@ -28,3 +28,8 @@ def read_name(first_name: str, last_name: str):
 @router.post("/users/", response_model=schemas.User)
 def create_user(user: schemas.User, db: Session = Depends(get_db)):
     return crud.create_user(db=db, new_user=user)
+
+
+@router.get("/users/", response_model=List[schemas.User])
+def get_users(db: Session = Depends(get_db)):
+    return crud.get_users(db=db)
