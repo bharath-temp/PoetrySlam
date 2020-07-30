@@ -28,7 +28,7 @@ jobs:
 
       - name: Lint
         working-directory: ./src/frontend/poetryslam
-        run: yarn test
+        run: yarn lint
 
       - name: Test
         working-directory: ./src/frontend/poetryslam
