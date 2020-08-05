@@ -16,4 +16,4 @@ class User(Base):
     user_name = Column(String, unique=True, index=True)
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
-    account_created = Column(DateTime)
+    account_created = Column(DateTime, default=None)
