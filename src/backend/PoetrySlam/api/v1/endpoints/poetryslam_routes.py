@@ -20,16 +20,16 @@ def read_item(item_id: int, q: Optional[str] = None):
     return {"item_id": item_id, "q": q}
 
 
-@router.get("/name/")
+@router.get("/name")
 def read_name(first_name: str, last_name: str):
     return {"first_name": first_name, "last_name": last_name}
 
 
-@router.post("/users/", response_model=schemas.User)
+@router.post("/users", response_model=schemas.User)
 def create_user(user: schemas.User, db: Session = Depends(get_db)):
     return crud.create_user(db=db, new_user=user)
 
 
-@router.get("/users/", response_model=List[schemas.User])
+@router.get("/users", response_model=List[schemas.User])
 def get_users(db: Session = Depends(get_db)):
     return crud.get_users(db=db)
