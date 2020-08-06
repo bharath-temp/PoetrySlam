@@ -1,23 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { Component } from 'react';
+import {
+  BrowserRouter as Switch, Route,
+} from 'react-router-dom';
 import './App.css';
-import { Users } from './components/Users';
-import { Userform } from './components/Userform';
+import Navigation from './components/Navigation';
+import Home from './components/Home';
+import Register from './components/Register';
+import Login from './components/Login';
+import ForgotPassword from './components/ForgotPassword';
 
-function App() {
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    fetch('users').then((res) => res.json()).then((data) => {
-      setUsers(data);
-    });
-  }, []);
-
-  return (
-    <div className="App">
-      <Users users={users} />
-      <Userform />
-    </div>
-  );
+// eslint-disable-next-line react/prefer-stateless-function
+class App extends Component {
+  render() {
+    return (
+      <div>
+        <Navigation />
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route path="/register" component={Register} />
+          <Route path="/login" component={Login} />
+          <Route path="/forgotpassword" component={ForgotPassword} />
+        </Switch>
+      </div>
+    );
+  }
 }
 
 export default App;

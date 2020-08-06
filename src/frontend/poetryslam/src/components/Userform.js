@@ -1,6 +1,7 @@
 import React from 'react';
 import { useFormik } from 'formik';
 
+// eslint-disable-next-line import/prefer-default-export
 export const Userform = () => {
   const { handleSubmit, handleChange } = useFormik({
     initialValues: {
