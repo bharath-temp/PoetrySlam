@@ -4,6 +4,11 @@ version = "0.1.0"
 description = ""
 authors = ["bharathpadmaraju <bharath.k.padmaraju@gmail.com>"]
 
+[[tool.poetry.source]]
+name = "pypi_with_cert"
+url = "https://pypi.org/project/"
+default = true
+
 [tool.poetry.dependencies]
 python = "^3.8"
 fastapi = "^0.60.1"
