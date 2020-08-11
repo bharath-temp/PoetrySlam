@@ -2,6 +2,7 @@ import logging
 import json
 
 from PoetrySlam.database import engine, SessionLocal
+from PoetrySlam import deps
 from PoetrySlam import models, schemas
 
 logger = logging.getLogger()
@@ -12,9 +13,11 @@ logger.addHandler(handler)
 
 def create_user(db: SessionLocal, new_user: schemas.User):
     db_user = models.User(**new_user.dict())
+    logger.info(new_user.dict())
+    db_user.hashed_password = deps.pwd_context.encrypt(db_user.hashed_password)
     try:
         db.add(db_user)
-        logger.info(f'User: {new_user.user_name} was successfully added to DB')
+        logger.info(f'User: {new_user.username} was successfully added to DB')
     except Exception as e:
         db.rollback()
         db.flush()
@@ -35,3 +38,23 @@ def get_users(db: SessionLocal):
         logger.info("No users were found in the DB")
         return None
     return users
+
+
+def get_user(db: SessionLocal, user_name: str):
+    logger.info(user_name)
+    try:
+        user_dict = db.query(models.User).filter_by(username=user_name).one()
+        logger.info(f'User found in the DB: {user_name}')
+        return user_dict
+    except Exception as e:
+        logger.info("No users were found in the DB")
+        return None
+
+
+def authenticate_user(db: SessionLocal, user_name: str, password: str):
+    user = get_user(db, user_name)
+    if not user:
+        return False
+    if not deps.verify_password(password, user.hashed_password):
+        return False
+    return user

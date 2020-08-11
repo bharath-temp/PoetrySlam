@@ -6,6 +6,7 @@ from PoetrySlam.api.v1 import api_router as api_router_v1
 
 app = FastAPI()
 
+
 origins = [
     "http://localhost",
     "http://localhost:3000",
