@@ -10,7 +10,7 @@ from PoetrySlam import schemas, crud
 
 SECRET_KEY = 'c1d3d5c12c3667fbec7e22dcebba984c563691274bccbd1d7bc204c4d807722e'
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 10
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")

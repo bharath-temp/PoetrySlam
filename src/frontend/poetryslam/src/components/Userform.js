@@ -1,13 +1,15 @@
+/* eslint-disable import/prefer-default-export */
 import React from 'react';
-import { useFormik } from 'formik';
+import {
+  useFormik, Form, Formik, Field, ErrorMessage,
+} from 'formik';
 
 export const Userform = () => {
   const { handleSubmit, handleChange } = useFormik({
     initialValues: {
-      id: 'id',
-      email: 'email',
-      user_name: 'user name',
-      hashed_password: 'password',
+      email: '',
+      username: '',
+      hashed_password: '',
     },
     async onSubmit(values) {
       console.log(values);
@@ -27,12 +29,26 @@ export const Userform = () => {
     },
   });
   return (
-    <form onSubmit={handleSubmit}>
-      <input name="id" onChange={handleChange} />
-      <input name="email" onChange={handleChange} />
-      <input name="user_name" onChange={handleChange} />
-      <input name="hashed_password" onChange={handleChange} />
-      <button type="submit">Create User</button>
-    </form>
+    <Formik>
+      {({ isSubmitting }) => (
+        <Form onSubmit={handleSubmit}>
+          <Field type="text" name="email" onChange={handleChange} />
+          <br />
+          <ErrorMessage name="email" component="div" />
+          <br />
+          <Field type="text" name="username" onChange={handleChange} />
+          <br />
+          <ErrorMessage name="username" component="div" />
+          <br />
+          <Field type="text" name="hashed_password" onChange={handleChange} />
+          <br />
+          <ErrorMessage name="hashed_password" component="div" />
+          <br />
+          <button type="submit" disabled={isSubmitting}>
+            Submit
+          </button>
+        </Form>
+      )}
+    </Formik>
   );
 };
