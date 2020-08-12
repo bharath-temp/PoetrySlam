@@ -10,6 +10,7 @@ function App() {
   useEffect(() => {
     fetch('users').then((res) => res.json()).then((data) => {
       setUsers(data);
+      console.log(data);
     });
   }, []);
 

@@ -28,6 +28,23 @@ def create_user(db: SessionLocal, new_user: schemas.User):
     return db_user
 
 
+def create_post(db: SessionLocal, current_user: schemas.User,
+                new_poem: schemas.Poem):
+    db_poem = models.Poem(**new_poem.dict())
+    logger.info(new_poem.dict())
+    try:
+        db.add(db_poem)
+        logger.info(f'User: {new_poem.title} was successfully added to DB')
+    except Exception as e:
+        db.rollback()
+        db.flush()
+        logger.info("User could not be aded to DB")
+        return None
+
+    db.commit()
+    return db_poem
+
+
 def get_users(db: SessionLocal):
     try:
         users = db.query(models.User).all()
@@ -46,6 +63,17 @@ def get_user(db: SessionLocal, user_name: str):
         user_dict = db.query(models.User).filter_by(username=user_name).one()
         logger.info(f'User found in the DB: {user_name}')
         return user_dict
+    except Exception as e:
+        logger.info("No users were found in the DB")
+        return None
+
+
+def get_user_poems(curr_user_id, db: SessionLocal):
+    logger.info(curr_user_id)
+    try:
+        poem_dict = db.query(models.Poem). \
+                    filter_by(author_id=curr_user_id).all()
+        return poem_dict
     except Exception as e:
         logger.info("No users were found in the DB")
         return None

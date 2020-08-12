@@ -20,7 +20,7 @@ export const Userform = () => {
         },
         body: JSON.stringify(values),
       });
-
+      console.log(response.json());
       if (response.ok) {
         console.log('response worked!');
       } else {
