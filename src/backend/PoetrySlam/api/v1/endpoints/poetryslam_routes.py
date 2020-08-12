@@ -89,6 +89,22 @@ async def read_users_me(current_user:
     return current_user
 
 
+@router.get("/users/me/poems")
+async def read_users_me(db: Session = Depends(get_db),
+                        current_user:
+                        schemas.User = Depends(get_current_active_user)):
+    return crud.get_user_poems(current_user.id, db=db)
+
+
+@router.post("/users/me/post", response_model=schemas.Poem)
+def create_post(new_poem: schemas.Poem,
+                current_user:
+                schemas.User = Depends(get_current_active_user),
+                db: Session = Depends(get_db)):
+    return crud.create_post(db=db, current_user=current_user,
+                            new_poem=new_poem)
+
+
 @router.post("/token")
 async def login(form_data: OAuth2PasswordRequestForm = Depends(),
                 db: Session = Depends(get_db)):
