@@ -4,7 +4,7 @@ import {
   useFormik, Form, Formik, Field, ErrorMessage,
 } from 'formik';
 
-export const Login = () => {
+function Login() {
   let bearer = '';
   const { handleSubmit, handleChange } = useFormik({
     initialValues: {
@@ -57,4 +57,6 @@ export const Login = () => {
       )}
     </Formik>
   );
-};
+}
+
+export default Login;
