@@ -53,11 +53,6 @@ async def get_current_active_user(current_user:
     return current_user
 
 
-@router.get("/")
-def read_root():
-    return {"Hello": "World"}
-
-
 @router.get("/items/{item_id}")
 def read_item(item_id: int, q: Optional[str] = None):
     return {"item_id": item_id, "q": q}
@@ -66,11 +61,6 @@ def read_item(item_id: int, q: Optional[str] = None):
 @router.get("/item/")
 async def read_items(token: str = Depends(oauth2_scheme)):
     return {"token": token}
-
-
-@router.get("/name")
-def read_name(first_name: str, last_name: str):
-    return {"first_name": first_name, "last_name": last_name}
 
 
 @router.post("/users", response_model=schemas.User)

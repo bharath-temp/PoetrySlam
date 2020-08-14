@@ -4,7 +4,7 @@ import {
   useFormik, Form, Formik, Field, ErrorMessage,
 } from 'formik';
 
-export const Userform = () => {
+function Userform() {
   const { handleSubmit, handleChange } = useFormik({
     initialValues: {
       email: '',
@@ -51,4 +51,6 @@ export const Userform = () => {
       )}
     </Formik>
   );
-};
+}
+
+export default Userform;
