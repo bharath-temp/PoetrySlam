@@ -44,8 +44,6 @@ class Poem(Base, SurrogatePK, AuditMixin):
     upvotes = Column(Integer, index=True)
     downvotes = Column(Integer, index=True)
     author_id = Column(UUIDType(), ForeignKey("user.id"))
-    written_date = Column(DateTime, default=datetime.datetime.utcnow,
-                          nullable=False)
     poem_type = Column(sa.Enum(PoemType, native_enum=False),
                        default=PoemType.FREE_VERSE, nullable=False)
     author = relationship("User", back_populates="poems")

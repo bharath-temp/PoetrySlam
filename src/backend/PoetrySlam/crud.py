@@ -1,5 +1,6 @@
 import logging
 import json
+import datetime
 
 from PoetrySlam.database import engine, SessionLocal
 from PoetrySlam import deps
@@ -31,7 +32,6 @@ def create_user(db: SessionLocal, new_user: schemas.User):
 def create_post(db: SessionLocal, current_user: schemas.User,
                 new_poem: schemas.Poem):
     db_poem = models.Poem(**new_poem.dict())
-    logger.info(new_poem.dict())
     try:
         db.add(db_poem)
         logger.info(f'User: {new_poem.title} was successfully added to DB')
