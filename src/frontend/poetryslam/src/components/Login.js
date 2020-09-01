@@ -3,9 +3,12 @@ import React from 'react';
 import {
   useFormik, Form, Formik, Field, ErrorMessage,
 } from 'formik';
+// eslint-disable-next-line import/no-cycle
+import { AuthContext } from '../App';
 
 function Login() {
-  let bearer = '';
+  const { dispatch } = React.useContext(AuthContext);
+  const bearer = '';
   const { handleSubmit, handleChange } = useFormik({
     initialValues: {
       username: '',
@@ -22,9 +25,15 @@ function Login() {
         body: JSON.stringify(grant),
       }).then((dataWrappedByPromise) => dataWrappedByPromise.json())
         .then((data) => {
-          bearer = `Bearer ${data.access_token}`;
+          // bearer = `Bearer ${data.access_token}`;
+          console.log(data.access_token);
+          dispatch({
+            type: 'LOGIN',
+            token: data.access_token,
+          });
         });
-
+      console.log(bearer);
+      /*
       console.log('response worked!');
       await fetch('/users/me', {
         method: 'GET',
@@ -36,6 +45,7 @@ function Login() {
         .then((data) => {
           console.log(data);
         });
+      */
     },
   });
   return (

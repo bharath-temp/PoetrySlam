@@ -1,70 +1,140 @@
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable linebreak-style */
-// import React, { useState, useEffect } from 'react';
-import React from 'react';
-import { Feed } from 'semantic-ui-react';
+import React, { useState, useEffect } from 'react';
+import '../App.css';
+import { Feed, Icon } from 'semantic-ui-react';
+import {
+  useFormik, Form, Formik, Field, ErrorMessage,
+} from 'formik';
 
 function Userpoemfeed() {
-  const tempdata = [
-    {
-      downvotes: 0,
-      id: 'ac867a1a-2008-4272-9e05-2d6f610ec62e',
-      author_id: '6eeebc6e-4970-4b5c-af08-bf6199357ef6',
-      title: 'sonnet #1',
-      written_date: '2020-08-12T21:52:21.436000',
-      text: 'this here is the epic sonnet i\'ve written praise me.',
-      created_at: '2020-08-12T21:53:18.145726',
-      poem_type: 'sonnet',
-      upvotes: 0,
-      updated_at: '2020-08-12T21:53:18.145726',
-    },
-    {
-      downvotes: 0,
-      id: '6281a3a1-5d68-450b-a3ee-114e94187b78',
-      author_id: '6eeebc6e-4970-4b5c-af08-bf6199357ef6',
-      title: 'string1',
-      written_date: '2020-08-12T22:08:07.756000',
-      text: 'string1',
-      created_at: '2020-08-12T22:08:29.289775',
-      poem_type: 'epic',
-      upvotes: 1,
-      updated_at: '2020-08-12T22:08:29.289775',
-    },
-  ];
-  // const bearer = '';
-  fetch('/item', {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-    },
-  }).then((dataWrappedByPromise) => dataWrappedByPromise.json())
-    .then((data) => {
-      console.log(data);
-    });
-  /*
   const [poems, setPoems] = useState([]);
+  // const { state: authState } = React.useContext(AuthContext);
+  const bearerToken = `Bearer ${localStorage.getItem('token')}`;
 
   useEffect(() => {
-    fetch('/users/me/poems').then((res) => res.json()).then((data) => {
+    fetch('/users/me/poems', {
+      headers: {
+        Authorization: bearerToken,
+      },
+    }).then((res) => res.json()).then((data) => {
       setPoems(data);
       console.log(data);
     });
-  }, []);
-  */
+  }, [bearerToken]);
+
+  const [userData, setUserData] = useState([]);
+  useEffect(() => {
+    fetch('/users/me', {
+      headers: {
+        Authorization: bearerToken,
+      },
+    }).then((res) => res.json()).then((data) => {
+      setUserData(data);
+      console.log(data);
+    });
+  }, [bearerToken]);
+  console.log(userData.id);
+
+  const { handleSubmit, handleChange } = useFormik({
+    initialValues: {
+      title: '',
+      text: '',
+      upvotes: 0,
+      downvotes: 0,
+      poem_type: 'free_verse',
+    },
+    async onSubmit(values) {
+      console.log(values.poem_type);
+      await fetch('/users/me/post', {
+        method: 'POST',
+        headers: {
+          accept: 'application/json',
+          Authorization: bearerToken,
+        },
+        body: JSON.stringify(
+          {
+            title: values.title,
+            text: values.text,
+            upvotes: values.upvotes,
+            downvotes: values.downvotes,
+            poem_type: values.poem_type,
+            author_id: userData.id,
+          },
+        ),
+      });
+    },
+  });
 
   return (
-    <Feed>
-      <Feed.Event>
-        {tempdata.map((poem) => (
-          <Feed.Content>
-            <Feed.Date content={poem.written_date} />
-            <Feed.Summary content={poem.title} />
-            <Feed.Extra text content={poem.text} />
-            <Feed.Extra text content={poem.poem_type} />
-          </Feed.Content>
+    <>
+      <Feed>
+        {poems.map((poem) => (
+          <Feed.Event>
+            <Feed.Content>
+              <br />
+              <Feed.Summary content={poem.title} />
+              <Feed.Date content={poem.created_at} />
+              <Feed.Extra text content={poem.text} />
+              <Feed.Extra text content={poem.poem_type} />
+              <Feed.Meta>
+                <Feed.Like>
+                  <Icon name='like' />
+                  {poem.upvotes}
+                  {' '}
+                  Likes
+                </Feed.Like>
+              </Feed.Meta>
+            </Feed.Content>
+          </Feed.Event>
         ))}
-      </Feed.Event>
-    </Feed>
+        ,
+      </Feed>
+
+      <Formik>
+        {({ isSubmitting }) => (
+          <Form onSubmit={handleSubmit}>
+            <Field type="text" name="title" onChange={handleChange} />
+            <br />
+            <ErrorMessage name="title" component="div" />
+            <br />
+            <Field type="text" name="text" onChange={handleChange} />
+            <br />
+            <ErrorMessage name="text" component="div" />
+            <br />
+            <Field name="upvotes" onChange={handleChange} />
+            <br />
+            <ErrorMessage name="upvotes" component="div" />
+            <br />
+            <Field name="downvotes" onChange={handleChange} />
+            <br />
+            <ErrorMessage name="downvotes" component="div" />
+            <br />
+            <Field as="select" name="poem_type" onChange={handleChange}>
+              <option value="free_verse">Free Verse</option>
+              <option value="rhymed">Rhymed</option>
+              <option value="epic">Epic</option>
+              <option value="narrative">Narrative</option>
+              <option value="haiku">Haiku</option>
+              <option value="sonnet">Sonnet</option>
+              <option value="elegie">Elegie</option>
+              <option value="ode">Ode</option>
+              <option value="limerick">Limerick</option>
+              <option value="lyric">Lyric</option>
+              <option value="ballad">Ballad</option>
+              <option value="soliloquy">Soliloquy</option>
+              <option value="villanelle">Villanelle</option>
+            </Field>
+            <br />
+            <ErrorMessage name="poem_type" component="div" />
+            <br />
+            <button type="submit" disabled={isSubmitting}>
+              Submit
+            </button>
+          </Form>
+        )}
+      </Formik>
+    </>
   );
 }
 

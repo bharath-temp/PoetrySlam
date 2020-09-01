@@ -6,19 +6,55 @@ import Userform from './components/Userform';
 import Login from './components/Login';
 import Userpoemfeed from './components/Userpoemfeed';
 
+export const AuthContext = React.createContext();
+
+const initialState = {
+  token: 'none',
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'LOGIN':
+      localStorage.setItem('token', action.token);
+      console.log('ooga');
+      console.log(localStorage.getItem('token'));
+      // console.log(action.token);
+      console.log('booga');
+      return {
+        ...state,
+        token: action.token,
+      };
+    case 'LOGOUT':
+      localStorage.clear();
+      return {
+        ...state,
+      };
+    default:
+      return state;
+  }
+};
+
 function App() {
+  const [state, dispatch] = React.useReducer(reducer, initialState);
   return (
-    <Router>
-      <div className="App">
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/users" component={Users} />
-          <Route path="/users/form" component={Userform} />
-          <Route path="/login" component={Login} />
-          <Route path="/me/poems" component={Userpoemfeed} />
-        </Switch>
-      </div>
-    </Router>
+    <AuthContext.Provider
+      value={{
+        state,
+        dispatch,
+      }}
+    >
+      <Router>
+        <div className="App">
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/users" component={Users} />
+            <Route path="/signup" component={Userform} />
+            <Route path="/login" component={Login} />
+            <Route path="/me/poems" component={Userpoemfeed} />
+          </Switch>
+        </div>
+      </Router>
+    </AuthContext.Provider>
   );
 }
 

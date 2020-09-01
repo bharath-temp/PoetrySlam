@@ -13,7 +13,6 @@ class Poem(BaseModel):
     upvotes: int
     downvotes: int
     author_id: UUID
-    written_date: datetime
     poem_type: models.PoemType
 
     class Config:
