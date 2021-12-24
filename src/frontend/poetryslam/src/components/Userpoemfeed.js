@@ -6,6 +6,7 @@ import { Feed, Icon } from 'semantic-ui-react';
 import {
   useFormik, Form, Formik, Field, ErrorMessage,
 } from 'formik';
+import Navbar from './Navbar';
 
 function Userpoemfeed() {
   const [poems, setPoems] = useState([]);
@@ -68,6 +69,7 @@ function Userpoemfeed() {
 
   return (
     <>
+      <Navbar />
       <Feed>
         {poems.map((poem) => (
           <Feed.Event>
@@ -79,7 +81,7 @@ function Userpoemfeed() {
               <Feed.Extra text content={poem.poem_type} />
               <Feed.Meta>
                 <Feed.Like>
-                  <Icon name='like' />
+                  <Icon name="like" />
                   {poem.upvotes}
                   {' '}
                   Likes

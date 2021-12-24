@@ -1,6 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import React, { useState, useEffect } from 'react';
 import { Table } from 'semantic-ui-react';
+import Navbar from './Navbar';
 
 function Users() {
   const [users, setUsers] = useState([]);
@@ -14,6 +15,7 @@ function Users() {
 
   return (
     <div>
+      <Navbar />
       <Table celled>
         <Table.Header>
           <Table.Row>
