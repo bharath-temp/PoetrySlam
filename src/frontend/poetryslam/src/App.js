@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -5,6 +6,7 @@ import Users from './components/Users';
 import Userform from './components/Userform';
 import Login from './components/Login';
 import Userpoemfeed from './components/Userpoemfeed';
+import Navbar from './components/Navbar';
 
 export const AuthContext = React.createContext();
 
@@ -59,7 +61,8 @@ function App() {
 }
 
 const Home = () => (
-  <div>
+  <div className="App">
+    <Navbar />
     <h1>Home Page</h1>
   </div>
 );
